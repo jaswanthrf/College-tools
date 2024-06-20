@@ -41,7 +41,7 @@ app.post('/submit', (req, res) => {
 
 // Example route
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start the Express server
