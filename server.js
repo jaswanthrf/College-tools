@@ -1,6 +1,14 @@
+const express = require('express');
 const { Pool } = require('pg');
 
-// Configure PostgreSQL connection pool
+// Initialize Express
+const app = express();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// PostgreSQL connection pool configuration
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -8,19 +16,36 @@ const pool = new Pool({
   },
 });
 
-// Example query
-pool.query('SELECT NOW()', (err, res) => {
-  if (err) {
-    console.error('Error executing query', err);
-  } else {
-    console.log('Response:', res.rows);
-  }
-  pool.end();
+// Handle form submission
+app.post('/submit', (req, res) => {
+  const data = req.body;
+  const subjects = Array.isArray(data.subjects) ? data.subjects : [data.subjects];
+
+  // Example query to insert data into PostgreSQL
+  const query = {
+    text: 'INSERT INTO students (name, student_id, email, branch, subjects) VALUES ($1, $2, $3, $4, $5)',
+    values: [data.name, data['student-id'], data.email, data.branch, subjects.join(',')],
+  };
+
+  // Execute query
+  pool.query(query, (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+      res.status(500).send('Error submitting form');
+    } else {
+      console.log('Form submitted successfully');
+      res.send('Form submitted successfully');
+    }
+  });
 });
 
-// Start your Express app or server
-// Replace with your specific application setup
-const PORT = process.env.PORT || 3004;
+// Example route
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+// Start the Express server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
