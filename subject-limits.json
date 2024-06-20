@@ -1,0 +1,44 @@
+{
+  "engineering": {
+    "math": {
+      "limit": 10,
+      "count": 0
+    },
+    "physics": {
+      "limit": 10,
+      "count": 0
+    },
+    "cs": {
+      "limit": 10,
+      "count": 0
+    }
+  },
+  "science": {
+    "bio": {
+      "limit": 10,
+      "count": 0
+    },
+    "chemistry": {
+      "limit": 10,
+      "count": 0
+    },
+    "physics": {
+      "limit": 10,
+      "count": 0
+    }
+  },
+  "arts": {
+    "history": {
+      "limit": 1,
+      "count": 1
+    },
+    "literature": {
+      "limit": 10,
+      "count": 0
+    },
+    "psychology": {
+      "limit": 10,
+      "count": 0
+    }
+  }
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Optional Subject Selection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { max-width: 600px; margin: auto; }
+        label { display: block; margin: 10px 0 5px; }
+        select, input { width: 100%; padding: 8px; margin-bottom: 10px; }
+        .optional-subjects { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Student Optional Subject Selection</h1>
+    <p>Welcome to the Optional Subject Selection Form. Please fill out the following details to choose your optional subjects based on your branch.</p>
+    <form id="subject-form">
+        <section>
+            <h2>Section 1: Personal Information</h2>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="student-id">Student ID:</label>
+            <input type="text" id="student-id" name="student-id" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="branch">Branch:</label>
+            <select id="branch" name="branch" required>
+                <option value="">Select your branch</option>
+                <option value="engineering">Engineering</option>
+                <option value="science">Science</option>
+                <option value="arts">Arts</option>
+            </select>
+        </section>
+        
+        <section class="optional-subjects" id="optional-subjects">
+            <h2>Section 2: Subject Selection</h2>
+            <div id="subjects-engineering" class="subject-list">
+                <label for="engineering-subjects">Optional Subjects:</label>
+                <select id="engineering-subjects" name="subjects" multiple>
+                    <option value="math">Advanced Mathematics</option>
+                    <option value="physics">Applied Physics</option>
+                    <option value="cs">Computer Science</option>
+                </select>
+            </div>
+            <div id="subjects-science" class="subject-list">
+                <label for="science-subjects">Optional Subjects:</label>
+                <select id="science-subjects" name="subjects" multiple>
+                    <option value="bio">Biology</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="physics">Physics</option>
+                </select>
+            </div>
+            <div id="subjects-arts" class="subject-list">
+                <label for="arts-subjects">Optional Subjects:</label>
+                <select id="arts-subjects" name="subjects" multiple>
+                    <option value="history">History</option>
+                    <option value="literature">Literature</option>
+                    <option value="psychology">Psychology</option>
+                </select>
+            </div>
+        </section>
+        
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script>
+        document.getElementById('branch').addEventListener('change', function () {
+            var branch = this.value;
+            document.getElementById('optional-subjects').style.display = 'block';
+            var subjectLists = document.querySelectorAll('.subject-list');
+            subjectLists.forEach(function(list) {
+                list.style.display = 'none';
+            });
+            if(branch) {
+                document.getElementById('subjects-' + branch).style.display = 'block';
+            }
+        });
+
+        document.getElementById('subject-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            var formData = new FormData(this);
+            
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.text()).then(data => {
+                alert(data);
+                this.reset();
+                document.getElementById('optional-subjects').style.display = 'none';
+            }).catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
